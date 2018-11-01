@@ -1,18 +1,17 @@
-var content = document.getElementById('content');
+var content = document.getElementById('content')
 
-content.innerHTML = renderGame();
+content.innerHTML = renderGame()
 
 function init () {
-  // console.info('Initializing this stupid game')
   content.innerHTML = renderGame();
   document.getElementsByClassName('pebble')[0].setAttribute('style', 'background-color: orange;')
-  document.getElementsByClassName('pebble')[15].setAttribute('id', "last-pebble")
+  document.getElementsByClassName('pebble')[15].setAttribute('id', 'last-pebble')
   addEvents()
   renderGame()
 }
 
-function renderGame() {
-    return `
+function renderGame () {
+  return `
         <div class="container d-flex flex-column justify-content-start align-items-center">
             <h4>There are 16 pebbles left</h4>
             <div class="w-50 text-center pebble-container">
@@ -46,37 +45,26 @@ function renderGame() {
     `
 }
 
-
 function addEvents () {
   var targetEl = document.getElementsByClassName('btn')[0]
-  // console.log(targetEl)
-  targetEl.addEventListener('click', takePebbles)
-}
-
-function takePebbles (evt) {
-  // click the button to fill pebbles with takeInput
-  var pebblesAmount = document.getElementById('takeInput').value
-  // console.log(pebblesAmount)
-  // console.info('Take pebbles')
-  colorPebbles()
+  targetEl.addEventListener('click', colorPebbles)
 }
 
 function colorPebbles () {
   var pebblesAttribute = document.getElementsByClassName('pebble')
   var pebblesAmount = document.getElementById('takeInput').value
   var count = pebblesAmount
- 
-  for (i= 0; i < pebblesAttribute.length; i++) {
-    if (pebblesAttribute[i].hasAttribute('style') && count !==0) {
+  var i
+  for (i = 0; i < pebblesAttribute.length; i++) {
+    if (pebblesAttribute[i].hasAttribute('style') && count !== 0) {
       console.log('these are already colored')
-    } else if (count !==0) {
+    } else if (count !== 0) {
       pebblesAttribute[i].setAttribute('style', 'background-color: orange;')
       count -= 1
     }
   }
   checkGame()
 }
-
 
 function switchPlayer () {
   // console.info(document.getElementsByClassName('mt-5')[0].innerHTML)
@@ -101,19 +89,18 @@ function checkGame () {
 
 function gameOver () {
   if (document.getElementsByClassName('mt-5')[0].innerHTML === "It's player 1's turn! How many pebbles will you take?") {
-  content.innerHTML += `<div class="container d-flex flex-column justify-content-start align-items-center">
+    content.innerHTML += `<div class="container d-flex flex-column justify-content-start align-items-center">
                           <br>
                           <h2>Player 2 Wins!</h2>
                           <button onclick="init()">Play again</button>
                       </div>`
   } else {
-      content.innerHTML += `<div class="container d-flex flex-column justify-content-start align-items-center">
+    content.innerHTML += `<div class="container d-flex flex-column justify-content-start align-items-center">
                               <br>
                               <h2>Player 1 Wins!</h2>
                               <button onclick="init()">Play again</button>
                           </div>`
   }
 }
-
 
 document.addEventListener('DOMContentLoaded', init)
