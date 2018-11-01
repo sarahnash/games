@@ -1,6 +1,6 @@
 var content = document.getElementById('content');
 
-var rockPaperScissors = "Replace this with your own abstraction of Rock Paper Scissors"
+var rockPaperScissors = "Ask Chris was exactly should go here?"
 
 content.innerHTML = renderGame(rockPaperScissors);
 
@@ -25,34 +25,59 @@ function renderGame(game) {
                 <div class="m-5">You played: <b>ROCK</b></div>
                 <div class="m-5">The computer played: <b>SCISSORS</b></div>
             </div>
-            <h1 class="text-center">You win!</h1>
+            <h1 class="winner text-center">You win!</h1>
         </div>
     `
 }
 
 function addEvents () {
   var buttons = document.getElementsByClassName('buttons')[0]
-  console.log(buttons)
   buttons.addEventListener('click', youPlayed)
 }
 
 function youPlayed (evt) {
-  console.log('youclickedit')
+  var yourPlay = document.getElementsByClassName('m-5')[0]
   // fill in which event target you clicked on
+  if (evt.target.innerHTML === 'Rock') {
+    yourPlay.innerHTML = 'You played: <b>ROCK</b>'
+  } else if (evt.target.innerHTML === 'Paper') {
+    yourPlay.innerHTML = 'You played: <b>PAPER</b>'
+  } else if (evt.target.innerHTML === 'Scissors') {
+    yourPlay.innerHTML = 'You played: <b>SCISSORS</b>'
+  }
   computerPlayed()
 }
 
-function computerPlayed (evt) {
-  // generate random choice, happens when you click
-  console.log('computer plays too')
+function computerPlayed () {
+  var computerPlays = document.getElementsByClassName('m-5')[1]
+  var choices = ['ROCK', 'PAPER', 'SCISSORS']
+  var computerChoice = choices[Math.floor(Math.random() * choices.length)]
+  computerPlays.innerHTML = 'The computer played: <b>' + computerChoice + '</b>'
+  comparePlays()
 }
 
-function comparePlays (youPlayed, computerPlayed) {
-  // logic to say s > p, r>s, p>r, tie
-}
-
-function declareWinner () {
-  //says who won
+function comparePlays () {
+  var yourPlay = document.getElementsByClassName('m-5')[0]
+  var computersPlay = document.getElementsByClassName('m-5')[1]
+  if (yourPlay.innerHTML === 'You played: <b>ROCK</b>' && computersPlay.innerHTML === 'The computer played: <b>ROCK</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = "It's a TIE!"
+  } else if (yourPlay.innerHTML === 'You played: <b>ROCK</b>' && computersPlay.innerHTML === 'The computer played: <b>PAPER</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'Computer Wins!'
+  } else if (yourPlay.innerHTML === 'You played: <b>ROCK</b>' && computersPlay.innerHTML === 'The computer played: <b>SCISSORS</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'You Win!'
+  } else if (yourPlay.innerHTML === 'You played: <b>PAPER</b>' && computersPlay.innerHTML === 'The computer played: <b>ROCK</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'You Win!'
+  } else if (yourPlay.innerHTML === 'You played: <b>PAPER</b>' && computersPlay.innerHTML === 'The computer played: <b>PAPER</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = "It's a TIE!"
+  } else if (yourPlay.innerHTML === 'You played: <b>PAPER</b>' && computersPlay.innerHTML === 'The computer played: <b>SCISSORS</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'Computer Wins!'
+  } else if (yourPlay.innerHTML === 'You played: <b>SCISSORS</b>' && computersPlay.innerHTML === 'The computer played: <b>ROCK</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'Computer Wins!'
+  } else if (yourPlay.innerHTML === 'You played: <b>SCISSORS</b>' && computersPlay.innerHTML === 'The computer played: <b>PAPER</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = 'You Win!'
+  } else if (yourPlay.innerHTML === 'You played: <b>SCISSORS</b>' && computersPlay.innerHTML === 'The computer played: <b>SCISSORS</b>') {
+    document.getElementsByClassName('winner')[0].innerHTML = "It's a TIE!"
+  }
 }
 
 document.addEventListener('DOMContentLoaded', init)
