@@ -48,7 +48,7 @@ function renderGame() {
 
 
 function addEvents () {
-  targetEl = document.getElementsByClassName('btn')[0]
+  var targetEl = document.getElementsByClassName('btn')[0]
   // console.log(targetEl)
   targetEl.addEventListener('click', takePebbles)
 }
