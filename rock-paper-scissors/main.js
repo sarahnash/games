@@ -1,8 +1,8 @@
-var content = document.getElementById('content');
+var content = document.getElementById('content')
 
-var rockPaperScissors = "Ask Chris was exactly should go here?"
+var rockPaperScissors = 'Ask Chris was exactly should go here?'
 
-content.innerHTML = renderGame(rockPaperScissors);
+content.innerHTML = renderGame(rockPaperScissors)
 
 function init () {
   console.info('Initializing the game')
@@ -10,9 +10,7 @@ function init () {
   renderGame()
 }
 
-function renderGame(game) {
-  // Change this render function to use the "game" parameter
-
+function renderGame () {
   return `
         <div class="container d-flex flex-column justify-content-start align-items-center">
             <h4>Choose your weapon:</h4>
