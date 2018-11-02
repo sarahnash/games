@@ -1,147 +1,81 @@
-function byId (id) {
-  return document.getElementById(id)
-}
+var content = document.getElementById('content')
 
-const containerEl = byId('container')
+var ticTacToe = "Replace this with your own abstraction of Tic Tac Toe"
 
-function buildPlayerTurn (playerTurn) {
-  return '<div>CURRENT TURN: ' + playerTurn + '</div>'
-}
-
-function buildSquare (boxId, contents) {
-  if (contents === null) {
-    contents = ''
-  }
-  return '<div class="square" id="box' + boxId + '">' + contents + '</div>'
-}
-
-function buildRow (squares) {
-  return '<div class="row">' +
-          buildSquare(squares[0].id, squares[0].contents) +
-          buildSquare(squares[1].id, squares[1].contents) +
-          buildSquare(squares[2].id, squares[2].contents) +
-          '</div>'
-}
-
-function buildBoard (board) {
-  const row1 = [{id: 0, contents: board[0]},
-                {id: 1, contents: board[1]},
-                {id: 2, contents: board[2]}]
-
-  const row2 = [{id: 3, contents: board[3]},
-                {id: 4, contents: board[4]},
-                {id: 5, contents: board[5]}]
-
-  const row3 = [{id: 6, contents: board[6]},
-                {id: 7, contents: board[7]},
-                {id: 8, contents: board[8]}]
-
-  return '<div class="board">' +
-    buildRow(row1) +
-    buildRow(row2) +
-    buildRow(row3) +
-  '</div>'
-}
-
-function buildGame (game) {
-  // TODO: should return the full game
-  return '<h1> Tic Tac Toe</h1>' +
-          buildPlayerTurn(game.playerTurn) +
-          buildBoard(game.board)
-}
-
-// when values change over time, the STATE of the game is not const
-// let indicates this variable is STATEFUL = changes over time
-
-let theGame = {
-  playerTurn: 'X',
-  board: [
-    null, null, null,
-    null, null, null,
-    null, null, null
-  ],
-  winner: null,
-  // winCoords: [[1, 0], [1, 1], [1, 2]]
-}
-
-function clickSquare (boxId) {
-  if (!isValidBoxId(boxId)) {
-    console.error('Invalid boxId passed to clickSquare function:' + boxId)
-    return
-  }
-
-  takeTurn(theGame.playerTurn, boxId)
-}
-
-function clickContainer (evt) {
-  const targetEl = evt.target
-  // defensive
-  if (!targetEl) return
-
-  if (targetEl.classList.contains('square')) {
-    console.log('you clicked on a square!')
-    const elId = targetEl.id
-    const idWithoutBox = elId.replace('box', '')
-    const boxIdNumber = parseInt(idWithoutBox, 10)
-    clickSquare(boxIdNumber)
-  }
-}
-
-function addEvents () {
-  console.info('Adding DOM events now')
-  containerEl.addEventListener('click', clickContainer)
-}
+content.innerHTML = renderGame(ticTacToe)
 
 function init () {
-  console.info('initializing function now!')
+  console.info('Initializing the game')
   addEvents()
   renderGame()
 }
 
-let renderCount = 0
-
-function renderGame () {
-  renderCount++
-  console.info('Rendering game now! Render #' + renderCount)
-  containerEl.innerHTML = buildGame(theGame)
+function renderGame (game) {
+  // Change this render function to use the "game" parameter
+  return `
+        <div class="container d-flex flex-column justify-content-start align-items-center">
+            <h4>It's player O's turn!</h4>
+            <div class="w-50 text-center">
+                <button>-</button>
+                <button>-</button>
+                <button>-</button>
+            </div>
+            <div class="w-50 text-center">
+                <button>-</button>
+                <button>-</button>
+                <button>-</button>
+            </div>
+            <div class="w-50 text-center">
+                <button>-</button>
+                <button>-</button>
+                <button>-</button>
+            </div>
+        </div>
+    `
 }
 
-function isValidBoxId (boxId) {
-  return typeof boxId === 'number' &&
-              boxId >= 0 &&
-              boxId <= 8
+function addEvents () {
+  var buttons = document.getElementsByClassName('w-50')
+  var i
+  for (i = 0; i < buttons.length; i++) {
+    buttons[i].addEventListener('click', youPlayed)
+  }
 }
 
-function isValidPlayer (player) {
-  return player === 'O' ||
-        player === 'X'
+function youPlayed (evt) {
+  console.log('you clicked it')
+  // put an X or O depedning on which player you are
+  var player = document.getElementsByTagName('h4')[0]
+  console.log(player)
+  if (player.innerHTML === "It's player O's turn!") {
+    evt.target.innerHTML = 'O'
+  } else if (player.innerHTML === "It's player X's turn!") {
+    evt.target.innerHTML = 'X'
+  }
+  checkGame()
 }
 
-function takeTurn (player, boxId) {
-  // defensive state management
-  if (theGame.playerTurn !== player) {
-    console.error('It is ' + theGame.playerTurn + 's turn to play.')
-    return
+function checkGame () {
+  console.log('checking coordinates')
+  // winning coordinates, if any are true
+  // if no winner then keep going
+  switchPlayer()
+  endGame()
+}
+
+function switchPlayer () {
+  var player = document.getElementsByTagName('h4')[0]
+  if (player.innerHTML === "It's player O's turn!") {
+    player.innerHTML = "It's player X's turn!"
+  } else if (player.innerHTML === "It's player X's turn!") {
+    player.innerHTML = "It's player O's turn!"
   }
-  
-  if (!isValidBoxId(boxId)) {
-    console.error('Invalid boxId passed to takeTurn function: ' + boxId)
-    return
-  }
+  console.log(player.innerHTML)
+}
 
-  if (theGame.board[boxId] !==null) {
-    console.error('boxId' + boxId + ' already has a piece')
-    return
-  }
-
-  theGame.board[boxId] = player
-  theGame.playerTurn = player === 'X' ? 'O' : 'X'
-  // ternary operator "if player turn is X then next player is O, else next player is O"
-
-  // TODO: check if there is a winner
-
-  renderGame()
+function endGame () {
+  // button to reset game, winner gets to go first?
+  console.log('you won, play again?')
 }
 
 document.addEventListener('DOMContentLoaded', init)
-
